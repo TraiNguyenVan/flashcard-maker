@@ -1,0 +1,665 @@
+:root {
+  --light-bg: #f8f9fa; /* Lighter grey for light mode */
+  --dark-bg: #202124;  /* Google dark grey */
+  --light-surface: #ffffff;
+  --dark-surface: #2d2e30; /* Slightly lighter dark surface */
+  --light-text-primary: #202124;
+  --dark-text-primary: #e8eaed; /* Google dark mode text */
+  --light-text-secondary: #5f6368;
+  --dark-text-secondary: #bdc1c6; /* Google dark mode secondary text */
+  --light-primary: #1a73e8; /* Google Blue */
+  --dark-primary: #8ab4f8; /* Lighter Google Blue for dark mode */
+  --light-primary-hover: #185abc;
+  --dark-primary-hover: #aecbfa;
+  --light-secondary: #dadce0; /* For secondary buttons, borders */
+  --dark-secondary: #3c4043;
+  --light-secondary-hover: #cdd1d4;
+  --dark-secondary-hover: #4a4e52;
+  --light-secondary-text: var(--light-text-primary);
+  --dark-secondary-text: var(--dark-text-primary);
+  --light-border: #dadce0;
+  --dark-border: #5f6368;
+  --light-error: #d93025;
+  --dark-error: #f28b82;
+  --light-correct: #1e8e3e; /* Green for correct answers */
+  --dark-correct: #81c995;
+  --light-card-bg: #e8f0fe; /* Light blue background for cards */
+  --dark-card-bg: #3c4043; /* Darker grey for cards */
+  --light-disabled-bg: #e0e0e0;
+  --dark-disabled-bg: #3c4043;
+  --light-disabled-text: #a0a0a0;
+  --dark-disabled-text: #7f8184;
+  --light-shadow-color-1: rgba(60, 64, 67, 0.15);
+  --dark-shadow-color-1: rgba(0, 0, 0, 0.3);
+  --light-shadow-color-2: rgba(60, 64, 67, 0.1);
+  --dark-shadow-color-2: rgba(0, 0, 0, 0.2);
+  --light-focus-shadow-color: rgba(26, 115, 232, 0.2);
+  --dark-focus-shadow-color: rgba(138, 180, 248, 0.3);
+  --light-button-focus-shadow-color: rgba(26, 115, 232, 0.3);
+  --dark-button-focus-shadow-color: rgba(138, 180, 248, 0.4);
+  --light-button-text: white;
+  --dark-button-text: var(--dark-bg); /* Use dark background for text on light blue */
+  --flashcard-width: 220px;
+  --flashcard-height: 150px; /* Make height consistent */
+  --navbar-height: 60px;
+}
+
+body {
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  margin: 0;
+  background-color: light-dark(var(--light-bg), var(--dark-bg));
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  padding-top: calc(var(--navbar-height) + 20px); /* Account for fixed navbar */
+  box-sizing: border-box;
+}
+
+.navbar {
+  width: 100%;
+  height: var(--navbar-height);
+  background-color: light-dark(var(--light-surface), var(--dark-surface));
+  box-shadow: 0 2px 4px light-dark(var(--light-shadow-color-1), var(--dark-shadow-color-1));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  font-size: 1.2em;
+  font-weight: 500;
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-button {
+  background-color: transparent;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-button:hover {
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg));
+}
+
+.nav-button.active {
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  border-bottom: 2px solid light-dark(var(--light-primary), var(--dark-primary));
+  font-weight: bold;
+}
+
+.nav-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px light-dark(var(--light-focus-shadow-color), var(--dark-focus-shadow-color));
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 10px;
+    height: auto;
+    min-height: var(--navbar-height);
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .nav-logo {
+    font-size: 1.1em;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    padding: 5px 0;
+  }
+
+  .nav-button {
+    padding: 6px 10px;
+    font-size: 0.85em;
+  }
+
+  body {
+    padding-top: calc(var(--navbar-height) + 40px);
+  }
+}
+
+main#mainContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-container, .quiz-container {
+  background-color: light-dark(var(--light-surface), var(--dark-surface));
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px light-dark(var(--light-shadow-color-1), var(--dark-shadow-color-1)),
+              0 4px 8px light-dark(var(--light-shadow-color-2), var(--dark-shadow-color-2));
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  margin-bottom: 15px;
+  font-size: 2em;
+  font-weight: 500;
+}
+
+h2 { /* For Quiz Title */
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  font-weight: 500;
+}
+
+p {
+  margin-bottom: 25px;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  line-height: 1.6;
+}
+
+textarea {
+  width: calc(100% - 32px); /* Adjusted for padding */
+  padding: 15px;
+  margin-bottom: 25px;
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: light-dark(var(--light-bg), var(--dark-card-bg));
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  min-height: 120px;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: light-dark(var(--light-primary), var(--dark-primary));
+  box-shadow: 0 0 0 2px light-dark(var(--light-focus-shadow-color), var(--dark-focus-shadow-color));
+}
+
+button {
+  background-color: light-dark(var(--light-primary), var(--dark-primary));
+  color: light-dark(var(--light-button-text), var(--dark-button-text));
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, box-shadow 0.2s ease, border-color 0.3s ease;
+  box-shadow: 0 1px 2px light-dark(var(--light-shadow-color-2), var(--dark-shadow-color-2));
+  margin: 5px; /* Add some margin for spacing if buttons wrap */
+}
+
+button:hover {
+  background-color: light-dark(var(--light-primary-hover), var(--dark-primary-hover));
+  box-shadow: 0 1px 3px light-dark(var(--light-shadow-color-1), var(--dark-shadow-color-1));
+}
+
+button:focus-visible { /* Use focus-visible for better accessibility */
+  outline: none;
+  box-shadow: 0 0 0 3px light-dark(var(--light-button-focus-shadow-color), var(--dark-button-focus-shadow-color));
+}
+
+button:disabled {
+  background-color: light-dark(var(--light-disabled-bg), var(--dark-disabled-bg));
+  color: light-dark(var(--light-disabled-text), var(--dark-disabled-text));
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.button-secondary {
+  background-color: light-dark(var(--light-secondary), var(--dark-secondary));
+  color: light-dark(var(--light-secondary-text), var(--dark-secondary-text));
+}
+
+.button-secondary:hover {
+  background-color: light-dark(var(--light-secondary-hover), var(--dark-secondary-hover));
+}
+
+.primary-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Removed .actions-bar styles */
+
+#saveLessonDialogContainer {
+  background-color: light-dark(var(--light-surface), var(--dark-surface));
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  border-radius: 8px;
+  padding: 25px 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px light-dark(var(--light-shadow-color-1), var(--dark-shadow-color-1));
+  text-align: left;
+}
+
+#saveLessonDialogContainer h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.4em;
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  text-align: center;
+}
+
+#saveLessonDialogContainer div { /* Applies to both label/input wrapper and button wrapper */
+  margin-bottom: 15px;
+}
+
+#saveLessonDialogContainer label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+}
+
+#saveLessonDialogContainer input[type="text"] {
+  width: 100%; /* Full width of its container */
+  padding: 12px 15px;
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: light-dark(var(--light-bg), var(--dark-card-bg));
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+  box-sizing: border-box;
+}
+
+#saveLessonDialogContainer input[type="text"]:focus {
+  outline: none;
+  border-color: light-dark(var(--light-primary), var(--dark-primary));
+  box-shadow: 0 0 0 2px light-dark(var(--light-focus-shadow-color), var(--dark-focus-shadow-color));
+}
+
+#saveLessonDialogContainer .dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px; /* Add some space above the buttons */
+  margin-bottom: 0;
+}
+
+.error-message {
+  color: light-dark(var(--light-error), var(--dark-error));
+  margin-top: 20px;
+  font-weight: 500;
+  min-height: 1.5em;
+}
+
+.flashcards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 30px;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.flashcard {
+  background-color: transparent;
+  width: var(--flashcard-width);
+  height: var(--flashcard-height);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  perspective: 1000px;
+  box-shadow: none;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 1px 2px light-dark(var(--light-shadow-color-2), var(--dark-shadow-color-2));
+  border-radius: 10px;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg));
+  overflow-y: auto; /* Allow scrolling within card face if content overflows */
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
+.flashcard:hover .flashcard-inner {
+  box-shadow: 0 4px 8px light-dark(var(--light-shadow-color-1), var(--dark-shadow-color-1));
+}
+
+.flashcard:hover .flashcard-front,
+.flashcard:hover .flashcard-back {
+   border-color: light-dark(var(--light-primary), var(--dark-primary));
+}
+
+.term, .definition {
+  width: 100%; /* Ensure term/definition divs take full width for scrolling */
+  max-height: 100%; /* Ensure they don't exceed card face height */
+  overflow-y: auto; /* Add scroll if content overflows */
+  padding: 5px; /* Add a little padding so text isn't against edges */
+  box-sizing: border-box;
+}
+
+.term {
+  font-size: 1.2em;
+  font-weight: 500;
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+}
+
+.definition {
+  font-size: 0.95em;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  line-height: 1.4;
+}
+
+/* Quiz Section Styles */
+.quiz-score {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+}
+
+.quiz-message {
+  font-size: 1em;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg));
+  border-radius: 8px;
+}
+
+#quizQuestionContainer {
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg));
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.quiz-question-type {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: light-dark(var(--light-primary), var(--dark-primary));
+    margin-bottom: 8px;
+}
+
+.quiz-question-text {
+    font-size: 1.3em;
+    font-weight: 500;
+    color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+    margin-bottom: 0; /* Remove default p margin */
+}
+
+.quiz-options-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.quiz-option-button {
+  background-color: light-dark(var(--light-surface), var(--dark-surface));
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+  border: 2px solid light-dark(var(--light-border), var(--dark-border));
+  padding: 15px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.quiz-option-button:hover {
+  border-color: light-dark(var(--light-primary), var(--dark-primary));
+  background-color: light-dark(var(--light-card-bg), #3a3f51); /* Slightly different hover for options */
+}
+
+.quiz-option-button:focus-visible {
+  border-color: light-dark(var(--light-primary), var(--dark-primary));
+  box-shadow: 0 0 0 2px light-dark(var(--light-focus-shadow-color), var(--dark-focus-shadow-color));
+  outline: none;
+}
+
+.quiz-option-button.selected {
+  border-color: light-dark(var(--light-primary), var(--dark-primary));
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg)); /* Indicate selection */
+}
+
+.quiz-option-button.correct-answer {
+  border-color: light-dark(var(--light-correct), var(--dark-correct)) !important;
+  background-color: light-dark(rgba(30, 142, 62, 0.1), rgba(129, 201, 149, 0.2)) !important;
+  color: light-dark(var(--light-correct), var(--dark-correct)) !important;
+}
+
+.quiz-option-button.incorrect-answer {
+  border-color: light-dark(var(--light-error), var(--dark-error)) !important;
+  background-color: light-dark(rgba(217, 48, 37, 0.1), rgba(242, 139, 130, 0.2)) !important;
+  color: light-dark(var(--light-error), var(--dark-error)) !important;
+}
+
+.quiz-option-button:disabled:not(.correct-answer):not(.incorrect-answer) {
+  background-color: light-dark(var(--light-disabled-bg), var(--dark-disabled-bg));
+  color: light-dark(var(--light-disabled-text), var(--dark-disabled-text));
+  border-color: light-dark(var(--light-border), var(--dark-border));
+  cursor: not-allowed;
+}
+
+
+.quiz-feedback {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  min-height: 1.5em;
+  font-weight: 500;
+}
+
+.quiz-feedback.correct {
+  color: light-dark(var(--light-correct), var(--dark-correct));
+}
+
+.quiz-feedback.incorrect {
+  color: light-dark(var(--light-error), var(--dark-error));
+}
+
+#quizEndControls {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; /* Space between message and buttons */
+}
+
+#quizEndControls p {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 10px; /* Adjust as needed */
+}
+
+#quizEndControls button {
+  width: auto; /* Allow buttons to size based on content */
+  min-width: 200px; /* Ensure a decent minimum width */
+}
+
+/* Saved Lessons Section */
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid light-dark(var(--light-border), var(--dark-border));
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  font-size: 1em;
+  font-weight: 500;
+  margin-right: 10px; /* Spacing between tabs */
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tab-button:hover {
+  color: light-dark(var(--light-primary), var(--dark-primary));
+}
+
+.tab-button.active {
+  color: light-dark(var(--light-primary), var(--dark-primary));
+  border-bottom-color: light-dark(var(--light-primary), var(--dark-primary));
+  font-weight: bold;
+}
+
+.tab-button:focus-visible {
+  outline: 2px solid light-dark(var(--light-focus-shadow-color), var(--dark-focus-shadow-color));
+  outline-offset: 2px;
+}
+
+
+#savedLessonsListContainer, #communityPoolListContainer {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.saved-lesson-item {
+  background-color: light-dark(var(--light-card-bg), var(--dark-card-bg));
+  border: 1px solid light-dark(var(--light-border), var(--dark-border));
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.saved-lesson-item-name {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: light-dark(var(--light-text-primary), var(--dark-text-primary));
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.community-lesson-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.community-lesson-meta {
+  font-size: 0.85em;
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  margin-top: 4px;
+}
+
+.saved-lesson-item .actions {
+  display: flex;
+  gap: 8px; /* Spacing between action buttons */
+  flex-shrink: 0; /* Prevent actions from shrinking too much */
+}
+
+.saved-lesson-item .actions button {
+  margin-left: 0; /* Remove previous margin-left */
+  padding: 8px 15px;
+  font-size: 0.9em;
+}
+
+
+.no-lessons-message {
+    color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+    font-style: italic;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+footer {
+  margin-top: auto; /* Push footer to bottom with flex-direction column on body */
+  padding-top: 25px;
+  width: 100%;
+  max-width: 800px; /* Match container width */
+  text-align: center;
+  border-top: 1px solid light-dark(var(--light-border), var(--dark-border));
+  color: light-dark(var(--light-text-secondary), var(--dark-text-secondary));
+  font-size: 0.9em;
+  box-sizing: border-box; /* Include padding in width calculation */
+}

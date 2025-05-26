@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Flashcard & Quiz Maker</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^0.7.0"
+      }
+    }
+  </script>
+  <!-- Add Google Fonts Link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-logo">
+        AI Flashcards
+    </div>
+    <div class="nav-links">
+      <button id="navGenerator" class="nav-button active" aria-current="page">Generator</button>
+      <button id="navQuiz" class="nav-button">Quiz</button>
+      <button id="navSavedLessons" class="nav-button">Saved Lessons</button>
+    </div>
+  </nav>
+
+  <main id="mainContent">
+    <div id="generatorSection" class="app-container">
+      <h1>Flashcard Generator</h1>
+      <p>
+        Enter a topic or a list of terms and definitions to generate flashcards using the Gemini API.
+      </p>
+      
+      <div id="generatorControls">
+        <label for="topicInput" class="sr-only">Topic or terms and definitions</label>
+        <textarea
+          id="topicInput"
+          placeholder="Enter topic (e.g., Ancient Rome) or 'Term: Definition' pairs (one per line)"
+          aria-label="Topic or terms and definitions"
+        ></textarea>
+        <div class="primary-actions">
+          <button id="generateButton">Generate Flashcards</button>
+          <button id="startQuizButton" class="button-secondary" style="display: none;">Start Quiz</button>
+          <button id="saveLessonButton" class="button-secondary" style="display: none;">Save Lesson</button>
+        </div>
+      </div>
+
+      <div id="saveLessonDialogContainer" style="display: none;">
+        <h3>Save Current Lesson</h3>
+        <div>
+            <label for="lessonNameInput">Lesson Name:</label>
+            <input type="text" id="lessonNameInput" placeholder="Enter lesson name">
+        </div>
+        <div class="dialog-actions">
+            <button id="confirmSaveLessonButton">Save Lesson</button>
+            <button id="cancelSaveLessonButton" class="button-secondary">Cancel</button>
+        </div>
+      </div>
+
+      <div id="errorMessage" class="error-message" aria-live="polite"></div>
+      <div id="flashcardsContainer" class="flashcards-container">
+        <!-- Flashcards will be generated here -->
+      </div>
+    </div>
+
+    <div id="quizSection" class="quiz-container" style="display: none;">
+      <h2>Quiz Time!</h2>
+      <div id="quizScore" class="quiz-score" aria-live="polite">Score: 0 / 0</div>
+      <div id="quizMessage" class="quiz-message" style="display:none;" aria-live="polite">Please generate or load flashcards and start a quiz from the Generator section.</div>
+      <div id="quizQuestionContainer">
+          <p id="quizQuestionType" class="quiz-question-type" aria-live="polite"></p>
+          <p id="quizQuestion" class="quiz-question-text" aria-live="polite">Question will appear here.</p>
+      </div>
+      <div id="quizOptionsContainer" class="quiz-options-container" role="radiogroup" aria-labelledby="quizQuestion">
+        <!-- Multiple choice options will be generated here -->
+      </div>
+      <div id="quizFeedback" class="quiz-feedback" aria-live="polite"></div>
+      <button id="nextQuestionButton" style="display: none;">Next Question</button>
+      <div id="quizEndControls" style="display: none;">
+          <p id="finalScoreMessage" aria-live="polite"></p>
+          <button id="restartQuizButton">Restart Quiz</button>
+          <button id="backToGeneratorButton" class="button-secondary">Back to Flashcard Maker</button>
+      </div>
+    </div>
+
+    <div id="savedLessonsSection" class="app-container" style="display: none;">
+      <h2>Saved Lessons</h2>
+      <div class="tabs-container">
+        <button id="myLessonsTabButton" class="tab-button active" role="tab" aria-selected="true" aria-controls="savedLessonsListContainer">My Lessons</button>
+        <button id="communityPoolTabButton" class="tab-button" role="tab" aria-selected="false" aria-controls="communityPoolListContainer">Community Pool</button>
+      </div>
+      <div id="savedLessonsListContainer" role="tabpanel" aria-labelledby="myLessonsTabButton">
+        <!-- User's saved lessons will be listed here -->
+      </div>
+      <div id="communityPoolListContainer" role="tabpanel" aria-labelledby="communityPoolTabButton" style="display: none;">
+        <!-- Community lessons will be listed here -->
+      </div>
+      <div id="savedLessonsUserMessage" class="error-message" aria-live="polite" style="margin-top: 15px;"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 AI Flashcard & Quiz Maker</p>
+  </footer>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
